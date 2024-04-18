@@ -1,65 +1,46 @@
 {
 	"info": {
-		"_postman_id": "8013eb8e-5c27-4974-970f-e11c34234396",
-		"name": "Karyna ASK24",
+		"_postman_id": "7f6905bd-ff7f-4832-858a-47408d355e9b",
+		"name": "New Collection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "31816910",
-		"_collection_link": "https://www.postman.com/karinaiva48/workspace/ask-mar24/collection/31816910-8013eb8e-5c27-4974-970f-e11c34234396?action=share&source=collection_link&creator=31816910"
+		"_collection_link": "https://www.postman.com/karinaiva48/workspace/ask-mar24/collection/31816910-7f6905bd-ff7f-4832-858a-47408d355e9b?action=share&source=collection_link&creator=31816910"
 	},
 	"item": [
 		{
-			"name": "/sign-up [S] Create new user",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"email\": \"testkaryna@test.com\",\r\n  \"name\": \"Test Test\",\r\n  \"group\": \"ABC\",\r\n  \"password\": \"123ABC\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
+			"name": "/sign-in [S] Log in as a STUDENT Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify user role = STUDENT\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"STUDENT\");\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"studentToken\", jsonData.token);\r",
+							"pm.environment.set(\"studentId\", jsonData.user.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
 					}
-				},
-				"url": {
-					"raw": "{{baseurl}}/sign-up",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"sign-up"
-					]
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "/activate/userId/actCode [S] Activate new user",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseurl}}/activate/12982/b16d0a139cd1996c47b70f3b69b030b317af69d5",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"activate",
-						"12982",
-						"b16d0a139cd1996c47b70f3b69b030b317af69d5"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/sign-in [S} Log in as a STUDENT",
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"testkaryna@test.com\",\r\n    \"password\": \"123ABC\"\r\n}",
+					"raw": "{\r\n    \"email\": \"{{studentEmail}}\",\r\n    \"password\": \"{{studentPassword}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -79,141 +60,39 @@
 			"response": []
 		},
 		{
-			"name": "/settings/change-name [S] Change Name",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{studentToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"newName\": \"MyNew Name\"\r\n}\r\n",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
+			"name": "/sign-in [T] Log in as a TEACHER Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify user role = TEACHER\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"TEACHER\");\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"teacherToken\", jsonData.token);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
 					}
-				},
-				"url": {
-					"raw": "{{baseurl}}/settings/change-name",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"settings",
-						"change-name"
-					]
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "settings/change-password [S] Change Password",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{studentToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"password\": \"123ABC\",\r\n  \"newPassword\": \"MyNewPassword\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseurl}}/settings/change-password",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"settings",
-						"change-password"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/forgot-password [S] Forgot Password",
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"email\": \"{{studentEmail}}\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseurl}}/forgot-password",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"forgot-password"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "reset-password/{{studentId}}/actCode [S] Activation Code",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"password\": \"123ABC\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseurl}}/reset-password/{{studentId}}/4227025499c9aaf42ef3e8f9352b538f978468b2",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"reset-password",
-						"{{studentId}}",
-						"4227025499c9aaf42ef3e8f9352b538f978468b2"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/sign-in [T} Log in as a TEACHER",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"lmaude@maxo.pro\",\r\n    \"password\": \"Zina24\"\r\n}",
+					"raw": "{\r\n    \"email\": \"{{teacherEmail}}\",\r\n    \"password\": \"{{teacherPassword}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -233,148 +112,29 @@
 			"response": []
 		},
 		{
-			"name": "/users/change-name/userId [T] Change user's Name",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{teacherToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"Updated Name Teacher\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
+			"name": "/quiz [T] Create a new quiz Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 2000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.environment.set(\"quizId\", jsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
 					}
-				},
-				"url": {
-					"raw": "{{baseurl}}/users/change-name/12687",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"users",
-						"change-name",
-						"12687"
-					]
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "/users/change-group/userId [T] Change user's group",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{teacherToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"group\": \"N001\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseurl}}/users/change-group/12982",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"users",
-						"change-group",
-						"12982"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/users/change-role/userId [T] Change user's role",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{teacherToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"role\": \"STUDENT\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseurl}}/users/change-role/12982",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"users",
-						"change-role",
-						"12982"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/quizzes [T] List of all quizzes",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{teacherToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseurl}}/quizzes",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"quizzes"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/quiz [T] Create a new quiz",
+			],
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -410,70 +170,32 @@
 			"response": []
 		},
 		{
-			"name": "/quiz [T] Update quiz",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{teacherToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"Demo Quiz\",\r\n  \"totalScore\": 18,\r\n  \"passingPercentage\": 75,\r\n  \"showStopperQuestion\": 1,\r\n  \"questions\": [\r\n    {\r\n      \"type\": \"TEXTUAL\",\r\n      \"question\": \"What is your name?\",\r\n      \"score\": 5\r\n    },\r\n    {\r\n      \"type\": \"SINGLE_CHOICE\",\r\n      \"question\": \"Which city is city largest in California?\",\r\n      \"score\": 7,\r\n      \"answer\": 2,\r\n      \"hasOtherOption\": false,\r\n      \"options\": [\r\n        \"San Francisco\",\r\n        \"Sacramento\",\r\n        \"Los Angeles\",\r\n        \"Redding\"\r\n      ]\r\n    },\r\n    {\r\n      \"type\": \"MULTIPLE_CHOICE\",\r\n      \"question\": \"Who was apple founded by?\",\r\n      \"score\": 6,\r\n      \"answers\": [\r\n        0,\r\n        1,\r\n        2\r\n      ],\r\n      \"hasOtherOption\": true,\r\n      \"options\": [\r\n        \"Steve Jobs\",\r\n        \"Steve Wozniak\",\r\n        \"Ronald Wayne\",\r\n        \"Ronald Reagan\"\r\n      ]\r\n    }\r\n  ],\r\n  \"id\": 24283\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
+			"name": "/quizzes [T] List of all quizzes Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 2000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"});\r",
+							"\r",
+							"var myQuiz = pm.environment.get(\"quizId\");\r",
+							"\r",
+							"pm.test(\"Verify the number of quiz created\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[jsonData.length-1].id).to.eql(myQuiz);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
 					}
-				},
-				"url": {
-					"raw": "{{baseurl}}/quiz",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"quiz"
-					]
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "/users [T] List of all users",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{treacherToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseurl}}/users",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/assignments [T[ List of all Assignments",
+			],
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -488,19 +210,45 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseurl}}/assignments",
+					"raw": "{{baseurl}}/quizzes",
 					"host": [
 						"{{baseurl}}"
 					],
 					"path": [
-						"assignments"
+						"quizzes"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "/assignment [T] Create New Assignment",
+			"name": "/assignment [T] Create New Assignment Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Fixed ReferenceError: jsondData is not defined\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"assignmentId\", jsonData[jsonData.length-1].id);\r",
+							"pm.environment.set(\"assignmentGroupID\", jsonData[jsonData.length-1].assignmentGroupID);\r",
+							"\r",
+							"pm.test(\"Verify status, result and gradeBy of assignment before submission\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[jsonData.length-1].status).to.eql(\"ASSIGNED\");\r",
+							"    pm.expect(jsonData[jsonData.length-1].result).to.eql(\"PENDING\");\r",
+							"    pm.expect(jsonData[jsonData.length-1].gradedBy).to.eql(\"NONE\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -530,217 +278,6 @@
 					],
 					"path": [
 						"assignment"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/my-assignments [S] List of all assignment",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{studentToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseurl}}/my-assignments",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"my-assignments"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/submit-assignment [S] Submits assignment's result",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{studentToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"assignmentId\": {{assignmentId}},\r\n    \"answers\": [\r\n        {\r\n            \"textAnswer\": \"Correct\",\r\n            \"answer\": null\r\n        },\r\n        {\r\n            \"textAnswer\": \"\",\r\n            \"answer\": 2\r\n        },\r\n        {\r\n            \"textAnswer\": \"\",\r\n            \"answer\": [\r\n                0,\r\n                1,\r\n                2\r\n            ]\r\n        }\r\n    ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseurl}}/submit-assignment",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"submit-assignment"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/assignment/assignmentId [T] Grade Assignment",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{teacherToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"summary\": \"Summary from teacher\",\r\n  \"result\": \"PASSED\",\r\n  \"grades\": [\r\n    {\r\n      \"comment\": \"Teacher comment\",\r\n      \"additionalScore\": 5\r\n    }\r\n  ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseurl}}/assignment/{{assignmentId}}",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"assignment",
-						"{{assignmentId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": " /my-grades [S] List of all submitted/graded assignments",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{studentToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseurl}}/my-grades",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"my-grades"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/assignment/assignmentGroupId [T] Delete Assignment",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{teacherToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{baseurl}}/assignment/5370f15e-5d02-4723-a2f6-4f2f41284fab",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"assignment",
-						"5370f15e-5d02-4723-a2f6-4f2f41284fab"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/quiz/{{quizId}} [T] Delete quiz",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{teacherToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{baseurl}}/quiz/{{quizId}}",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"quiz",
-						"{{quizId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "users/{{studentId}} [T] Delete user",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{teacherToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{baseurl}}/users/{{studentId}}",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"users",
-						"{{studentId}}"
 					]
 				}
 			},
