@@ -8,134 +8,6 @@
 	},
 	"item": [
 		{
-			"name": "/sign-up [S] Create new user",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response message = User was created\", function () {\r",
-							"\tvar jsonData = pm.response.json();\r",
-							"\tpm.expect(jsonData.message).to.eql(\"User was created\");\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"email\": \"testkaryna@test.com\",\r\n  \"name\": \"Test Test\",\r\n  \"group\": \"ABC\",\r\n  \"password\": \"123ABC\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{baseurl}}/sign-up",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"sign-up"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET ActivationCode [S]",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"var jsonData=pm.response.json();\r",
-							"\r",
-							"pm.environment.set(\"activationCode\", jsonData[0].activationCode);\r",
-							"pm.environment.set(\"userId\", jsonData[0].id);\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:3000/api/users?_where=(email,eq,{{studentEmail}})",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"api",
-						"users"
-					],
-					"query": [
-						{
-							"key": "_where",
-							"value": "(email,eq,{{studentEmail}})"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/activate/userId/actCode [S] Activate new user",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Response message = User was activated\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.message).to.eql(\"User was activated\");\r",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseurl}}/activate/{{userId}}/{{activationCode}}",
-					"host": [
-						"{{baseurl}}"
-					],
-					"path": [
-						"activate",
-						"{{userId}}",
-						"{{activationCode}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "/sign-in [S] Log in as a STUDENT",
 			"event": [
 				{
@@ -155,7 +27,8 @@
 							"});\r",
 							"\r",
 							"var jsonData = pm.response.json();\r",
-							"pm.environment.set(\"studentToken\", jsonData.token);"
+							"pm.environment.set(\"studentToken\", jsonData.token);\r",
+							"pm.environment.set(\"userId\", jsonData.user.id);"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -619,6 +492,26 @@
 		},
 		{
 			"name": "users/{{studentId}} [T] Delete user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response message = User role was updated\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.status).to.eql(\"success\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"auth": {
 					"type": "bearer",
